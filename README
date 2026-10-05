@@ -1,0 +1,141 @@
+# SailChip
+
+**A versatile open-source Hardware Root-of-Trust (HW-RoT) framework for resource-constrained IoT devices.**
+
+SailChip is a generator for lightweight HW-RoTs. More information coming soon.
+
+> [!NOTE]
+> This repository accompanies a manuscript, which is currently under review.
+> The sources will be made publicly available upon acceptance of the manuscript.
+
+---
+
+## Contents
+
+- [Concept](#concept)
+- [Modules](#modules)
+- [System Integration](#system-integration)
+- [Getting Started](#getting-started)
+- [Repository Structure](#repository-structure)
+- [Related Publications](#related-publications)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
+
+---
+
+## Concept
+
+*Coming soon.*
+
+---
+
+## Modules
+
+| Module | Cryptographic primitives | Category |
+|---|---|---|
+| [SAILOR core](#sailor-lightweight-risc-v-cryptography-core) | AES, SHA-256/-512 (RISC-V *Zkn*), constant-time execution (*Zkt*) | Conventional |
+| [Ascon engine](#ascon-engine) | Ascon-AEAD, Ascon-Hash, Ascon-XOF | Lightweight |
+| [Unified SHA-3/SHAKE engine](#unified-sha-3shake-engine) | SHA3-224/-256/-384/-512, SHAKE128/256 | Conventional |
+| [Rocket core](#rocket-core) | – (general-purpose RV32IM processing) | Processing core |
+
+### SAILOR: Lightweight RISC-V Cryptography Core
+
+SAILOR is a family of lightweight and energy-efficient RISC-V cores that serves as the HW-RoT controller.
+
+- RV32I base instruction set with a three-stage pipeline
+- Serializable datapath with configurable widths of 1, 2, 4, 8, 16, or 32 bits
+- Independently selectable RISC-V scalar cryptography extensions:
+
+  | Extension | Description |
+  |---|---|
+  | Zbkb | Bit-manipulation for cryptography |
+  | Zbkc | Carry-less multiplication |
+  | Zbkx | Crossbar permutations |
+  | Zkne & Zknd | AES encryption & decryption |
+  | Zknh | SHA-256 & SHA-512 |
+  | **Zkn** | NIST algorithm suite (Zbkb, Zbkc, Zbkx, Zkne, Zknd, Zknh) |
+  | **Zkt** | Data-independent execution latency |
+
+- Resource sharing with existing functional units, e.g., a compact combined AES encryption/decryption
+  S-box and ALU reuse for SHA-2 bit-permutations
+
+### Ascon Engine
+
+A compact single engine for the NIST lightweight cryptography standard Ascon.
+
+- Supports authenticated encryption with associated data (AEAD), hashing, and extendable-output
+  function (XOF) modes in one engine
+- Round-based implementation with a single 320-bit state register
+- Finite-state machine reduced to two states (non-message and message state) shared across all modes
+- Optimized state initialization and low-complexity padding offset computation
+
+### Unified SHA-3/SHAKE Engine
+
+A unified engine for the SHA-3 hash functions and the SHAKE extendable-output functions, complementing
+the SHA-2 support of SAILOR.
+
+- Runtime selection of SHA3-224/-256/-384/-512 and SHAKE128/256
+- Round-based implementation with a single Keccak permutation core
+- Byte-partitioned state register for flexible, mode-specific rate and capacity configuration
+
+### Rocket Core
+
+The [Rocket core](https://github.com/chipsalliance/rocket-chip) is a 5-stage, in-order RISC-V core,
+deployed in its 32-bit RV32IM configuration.
+
+### Further Modules
+
+*Coming soon.*
+
+---
+
+## System Integration
+
+*Coming soon.*
+
+---
+
+## Getting Started
+
+*Coming soon.*
+
+---
+
+## Repository Structure
+
+*Coming soon.*
+
+---
+
+## Related Publications
+
+SailChip builds on the following components:
+
+- **SAILOR** – C. Ewert, T. Hardow, M. Fritsch, L. Dietrich, H. Strunck, R. Buchty, M. Berekovic,
+  and S. Mulhem, "SAILOR: A Scalable and Energy-Efficient Ultra-Lightweight RISC-V for IoT Security,"
+  *arXiv preprint arXiv:2602.24166*, 2026.
+- **Ascon engine** – D. Najork, A. Nešković, H.-K. Lin, C. Ewert, S. Dreier, M. Berekovic,
+  R. Buchty, and S. Mulhem, "Single engine architecture for hardware root of trust,"
+  *Journal of Cryptographic Engineering*, vol. 15, no. 3, 2025.
+- **Unified SHA-3/SHAKE engine** – C. Ewert, A. S. Poudel, M. Ayache, A. Nešković, R. Buchty,
+  M. Berekovic, S. Berndt, and S. Mulhem, "Lightweight Unified SHA-3/SHAKE Architecture with a
+  Fault-Resilient State," *arXiv preprint arXiv:2512.03616*, 2025.
+- **Chipyard** – A. Amid *et al.*, "Chipyard: Integrated Design, Simulation, and Implementation
+  Framework for Custom SoCs," *IEEE Micro*, vol. 40, no. 4, 2020.
+- **Rocket** – K. Asanović *et al.*, "The Rocket Chip Generator," Tech. Rep. UCB/EECS-2016-17,
+  University of California, Berkeley, 2016.
+
+---
+
+## Acknowledgements
+
+SailChip is developed by the Trustworthiness Research Group at the Institute of Computer Engineering,
+University of Luebeck, Germany.
+
+---
+
+## License
+
+<!-- TODO: add license -->
+
+*To be announced.*
